@@ -16,19 +16,13 @@ import React, { ReactNode, useRef } from "react";
 import styled from "styled-components";
 import { useOnClickNTimes } from "./useOnClickNTimes";
 
-export const TOP_BAR_HEIGHT = 40;
+export const TOP_BAR_HEIGHT = 72;
 
 const TopBar = styled.div`
   position: relative;
   box-sizing: border-box;
-  background-color: white;
-  border-bottom: 1px solid #eaeaea;
-  padding: 0 64px;
-  min-height: ${TOP_BAR_HEIGHT}px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  padding: 8px;
+  background-color: #e5e5e5;
 `;
 
 const Label = styled.div`
@@ -45,9 +39,6 @@ const Label = styled.div`
 `;
 
 const TopBarLeft = styled.div`
-  position: absolute;
-  top: 0;
-  left: 4px;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -56,21 +47,51 @@ const TopBarLeft = styled.div`
 `;
 
 const TopBarRight = styled.div`
-  position: absolute;
-  top: 0;
-  right: 8px;
   height: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 16px;
+  gap: 64px;
 `;
 
-const TopBarCenter = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+const TopBarCenter = styled.div``;
+
+const TopBarWrapper = styled.div`
+  background-color: white;
+  border-bottom: 1px solid #eaeaea;
+  height: ${TOP_BAR_HEIGHT}px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px;
+  padding: 24px;
+`;
+
+const TopBarButton = styled.button<{ isActive: boolean }>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: ${({ isActive }) => (isActive ? "white" : "black")};
+  width: 76px;
+  height: 32px;
+  background: ${({ isActive }) => (isActive ? "#066050" : "transparent")};
+  border-radius: 8px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  width: 100px;
+  height: 40px;
+`;
+
+const FlexRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
 `;
 
 export const EditorTopBar: React.FC<{
@@ -110,80 +131,135 @@ export const EditorTopBar: React.FC<{
 
   return (
     <TopBar ref={headingRef}>
-      <TopBarLeft>
-        {!hideCloseButton && (
-          <>
+      <TopBarWrapper>
+        <TopBarLeft>
+          <DeviceSwitch
+            devices={devices}
+            deviceId={viewport}
+            onDeviceChange={onViewportChange}
+          />
+          {!hideCloseButton && (
+            <>
+              <ButtonGhost
+                icon={Icons.Close}
+                hideLabel
+                onClick={() => {
+                  if (onClose) {
+                    onClose();
+                  }
+                }}
+              >
+                Close
+              </ButtonGhost>
+
+              <div
+                style={{ height: "100%", background: Colors.black10, width: 1 }}
+              />
+            </>
+          )}
+
+          {readOnly && <Label>Read-Only</Label>}
+        </TopBarLeft>
+
+        <TopBarCenter>
+          <span style={{ fontSize: 18, fontWeight: "bold" }}>Page name</span>
+        </TopBarCenter>
+
+        <TopBarRight>
+          {/* <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "6px",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant={"body"}
+              component="label"
+              htmlFor="easyblocks-edit-mode-button"
+            >
+              Edit mode
+            </Typography>{" "}
+            <Toggle
+              name="easyblocks-edit-mode-button"
+              checked={isEditing}
+              onChange={() => {
+                onIsEditingChange();
+              }}
+            />
+          </div> */}
+          <FlexRow>
             <ButtonGhost
-              icon={Icons.Close}
+              icon={Icons.Undo}
               hideLabel
               onClick={() => {
-                if (onClose) {
-                  onClose();
-                }
+                onUndo();
               }}
             >
-              Close
+              Undo
             </ButtonGhost>
+            <ButtonGhost
+              icon={Icons.Redo}
+              hideLabel
+              onClick={() => {
+                onRedo();
+              }}
+            >
+              Redo
+            </ButtonGhost>
+          </FlexRow>
+          <FlexRow>
+            <button>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9.50003C19.0034 10.8199 18.6951 12.1219 18.1 13.3C17.3944 14.7118 16.3098 15.8992 14.9674 16.7293C13.6251 17.5594 12.0782 17.9994 10.5 18C9.18013 18.0035 7.87812 17.6951 6.7 17.1L1 19L2.9 13.3C2.30493 12.1219 1.99656 10.8199 2 9.50003C2.00061 7.92179 2.44061 6.37488 3.27072 5.03258C4.10083 3.69028 5.28825 2.6056 6.7 1.90003C7.87812 1.30496 9.18013 0.996587 10.5 1.00003H11C13.0843 1.11502 15.053 1.99479 16.5291 3.47089C18.0052 4.94699 18.885 6.91568 19 9.00003V9.50003Z"
+                  stroke="#222222"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
 
-            <div
-              style={{ height: "100%", background: Colors.black10, width: 1 }}
-            />
-          </>
-        )}
-        <ButtonGhost
-          icon={Icons.Undo}
-          hideLabel
-          onClick={() => {
-            onUndo();
-          }}
-        >
-          Undo
-        </ButtonGhost>
-        <ButtonGhost
-          icon={Icons.Redo}
-          hideLabel
-          onClick={() => {
-            onRedo();
-          }}
-        >
-          Redo
-        </ButtonGhost>
-        {readOnly && <Label>Read-Only</Label>}
-      </TopBarLeft>
+            <button>
+              <svg
+                width="24"
+                height="18"
+                viewBox="0 0 24 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 9C1 9 5 1 12 1C19 1 23 9 23 9C23 9 19 17 12 17C5 17 1 9 1 9Z"
+                  stroke="#222222"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12 12C13.6569 12 15 10.6569 15 9C15 7.34315 13.6569 6 12 6C10.3431 6 9 7.34315 9 9C9 10.6569 10.3431 12 12 12Z"
+                  stroke="#222222"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </FlexRow>
 
-      <TopBarCenter>
-        <DeviceSwitch
-          devices={devices}
-          deviceId={viewport}
-          onDeviceChange={onViewportChange}
-        />
-      </TopBarCenter>
-
-      <TopBarRight>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: "6px",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            variant={"body"}
-            component="label"
-            htmlFor="easyblocks-edit-mode-button"
-          >
-            Edit mode
-          </Typography>{" "}
-          <Toggle
-            name="easyblocks-edit-mode-button"
-            checked={isEditing}
-            onChange={() => {
-              onIsEditingChange();
-            }}
-          />
-        </div>
-      </TopBarRight>
+          <FlexRow>
+            <TopBarButton isActive={false}>Save</TopBarButton>
+            <TopBarButton isActive={true}>Continue</TopBarButton>
+          </FlexRow>
+        </TopBarRight>
+      </TopBarWrapper>
     </TopBar>
   );
 };
@@ -350,6 +426,29 @@ const DEVICE_ID_TO_ICON: Record<
   ),
 };
 
+const Button = styled.button<{ isActive: boolean }>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: ${({ isActive }) => (isActive ? "white" : "black")};
+  width: 76px;
+  height: 32px;
+  background: ${({ isActive }) => (isActive ? "#066050" : "transparent")};
+  border-radius: 8px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+`;
+
 function DeviceSwitch({
   deviceId,
   devices,
@@ -370,37 +469,36 @@ function DeviceSwitch({
         onDeviceChange(deviceId);
       }}
     >
-      {devices.map((d) => {
-        if (d.hidden) {
-          return null;
-        }
-
-        return (
-          <Tooltip key={d.id}>
-            <TooltipTrigger>
-              <ToggleGroupItem value={d.id}>
-                {DEVICE_ID_TO_ICON[d.id]}
-              </ToggleGroupItem>
-            </TooltipTrigger>
-
-            <TooltipContent>
-              <Typography color="white">{d.label ?? d.id}</Typography>
-            </TooltipContent>
-          </Tooltip>
-        );
-      })}
-
-      <Tooltip>
-        <TooltipTrigger>
-          <ToggleGroupItem value="fit-screen">
-            {DEVICE_ID_TO_ICON["fit-screen"]}
-          </ToggleGroupItem>
-        </TooltipTrigger>
-
-        <TooltipContent>
-          <Typography color="white">Fit screen</Typography>
-        </TooltipContent>
-      </Tooltip>
+      <ButtonWrapper>
+        <Tooltip>
+          <TooltipTrigger>
+            <ToggleGroupItem
+              value="xs"
+              css={`
+                background-color: transparent !important;
+                width: 76px;
+                height: 32px;
+              `}
+            >
+              <Button isActive={deviceId === "xs"}>Mobile</Button>
+            </ToggleGroupItem>
+          </TooltipTrigger>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger>
+            <ToggleGroupItem
+              value="xl"
+              css={`
+                width: 76px;
+                height: 32px;
+                background-color: transparent !important;
+              `}
+            >
+              <Button isActive={deviceId === "xl"}>Desktop</Button>
+            </ToggleGroupItem>
+          </TooltipTrigger>
+        </Tooltip>
+      </ButtonWrapper>
     </ToggleGroup>
   );
 }

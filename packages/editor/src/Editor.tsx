@@ -93,10 +93,11 @@ const ContentContainer = styled.div`
 const SidebarAndContentContainer = styled.div<{ height: "100vh" | "100%" }>`
   height: ${(props) => `calc(${props.height} - ${TOP_BAR_HEIGHT}px)`};
   width: 100%;
-  background: #fafafa;
   display: flex;
   flex-direction: row;
   align-items: stretch;
+  background-color: #e5e5e5;
+  padding: 0 8px 0 8px;
 `;
 
 const SidebarContainer = styled.div`
@@ -104,6 +105,7 @@ const SidebarContainer = styled.div`
   background: ${Colors.white};
   border-left: 1px solid ${Colors.black100};
   box-sizing: border-box;
+  border-radius: 12px;
 
   > * {
     box-sizing: border-box;

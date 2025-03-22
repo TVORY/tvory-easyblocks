@@ -272,34 +272,34 @@ const Master = createIcon(
 
 const Redo = createIcon(
   <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
+    width="21"
+    height="19"
+    viewBox="0 0 21 19"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M12.0858 6.35355L9.43934 9L10.1464 9.70711L13.6464 6.20711L14 5.85355L13.6464 5.5L10.1464 2L9.43934 2.70711L12.0858 5.35355H8.29289C4.71675 5.35355 1.79289 8.27741 1.79289 11.8536L1.79289 13.3536H2.79289L2.79289 11.8536C2.79289 8.8297 5.26904 6.35355 8.29289 6.35355H12.0858Z"
-      fill="black"
+      d="M14 1L19 6L14 11M10 18H7C3.68629 18 1 15.3137 1 12C1 8.68629 3.68629 6 7 6H18"
+      stroke="#222222"
+      stroke-width="1.5"
+      stroke-linecap="round"
     />
   </svg>
 );
 
 const Undo = createIcon(
   <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
+    width="21"
+    height="19"
+    viewBox="0 0 21 19"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M3.91421 6.35355L6.56066 9L5.85355 9.70711L2.35355 6.20711L2 5.85355L2.35355 5.5L5.85355 2L6.56066 2.70711L3.91421 5.35355H7.70711C11.2832 5.35355 14.2071 8.27741 14.2071 11.8536L14.2071 13.3536H13.2071L13.2071 11.8536C13.2071 8.8297 10.731 6.35355 7.70711 6.35355H3.91421Z"
-      fill="black"
+      d="M7 1L2 6L7 11M11 18H14C17.3137 18 20 15.3137 20 12C20 8.68629 17.3137 6 14 6H3"
+      stroke="#222222"
+      stroke-width="1.5"
+      stroke-linecap="round"
     />
   </svg>
 );

@@ -62,7 +62,11 @@
   },
   "pnpm": {
     "overrides": {
-      "@types/react": "^18.2.20"
+      "@types/react": "^18.2.20",
+      "@easyblocks/build-tools": "link:packages/build-tools"
     }
+  },
+  "dependencies": {
+    "@easyblocks/build-tools": "link:packages/build-tools"
   }
 }
