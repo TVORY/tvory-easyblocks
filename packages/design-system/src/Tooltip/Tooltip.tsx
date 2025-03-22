@@ -20,14 +20,14 @@ function TooltipContent(props: { children: ReactNode }) {
       <RadixTooltip.Content
         css={`
           display: flex;
-          padding: 6px 4px;
+          padding: 8px 10px;
           justify-content: center;
           align-items: center;
-
           border-radius: 2px;
-          background: ${Colors.black800};
-
-          color: ${Colors.white};
+          color: ${Colors.black800};
+          background: ${Colors.white};
+          border-radius: 8px;
+          font-size: 14px;
         `}
       >
         <RadixTooltip.Arrow

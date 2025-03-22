@@ -52,7 +52,7 @@ import { ExternalDataChangeHandler } from "./EasyblocksEditorProps";
 import { EditorContext, EditorContextType } from "./EditorContext";
 import { EditorExternalDataProvider } from "./EditorExternalDataProvider";
 import { EditorIframe } from "./EditorIframe";
-import { EditorSidebar } from "./EditorSidebar";
+import { EditorToolsSidebar } from "./EditorToolsSidebar";
 import { EditorTopBar, TOP_BAR_HEIGHT } from "./EditorTopBar";
 import { ModalPicker } from "./ModalPicker";
 import { TemplateModal } from "./TemplateModal";
@@ -82,6 +82,7 @@ import { checkLocalesCorrectness } from "./utils/locales/checkLocalesCorrectness
 import { removeLocalizedFlag } from "./utils/locales/removeLocalizedFlag";
 import { ZodNullDef } from "zod";
 import { TemplatePicker } from "./TemplatePicker";
+import EditorElementsSidebar from "./EditorElementsSidebar";
 
 const ContentContainer = styled.div`
   position: relative;
@@ -91,13 +92,13 @@ const ContentContainer = styled.div`
 `;
 
 const SidebarAndContentContainer = styled.div<{ height: "100vh" | "100%" }>`
-  height: ${(props) => `calc(${props.height} - ${TOP_BAR_HEIGHT}px)`};
+  height: ${(props) => `calc(${props.height} - ${TOP_BAR_HEIGHT}px - 16px)`};
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: stretch;
   background-color: #e5e5e5;
-  padding: 0 8px 0 8px;
+  padding: 8px;
 `;
 
 const SidebarContainer = styled.div`
@@ -635,6 +636,9 @@ const EditorContent = ({
   const handleSetFocussedField = React.useRef(
     (field: Array<string> | string) => {
       const nextFocusedField = Array.isArray(field) ? field : [field];
+      console.log("handleSetFocussedField", {
+        nextFocusedField,
+      });
       setFocussedField(nextFocusedField);
     }
   ).current;
@@ -680,6 +684,9 @@ const EditorContent = ({
       notify(message);
     },
     openComponentPicker: function (config) {
+      console.log("openComponentPicker", {
+        config,
+      });
       return new Promise((resolve) => {
         setComponentPickerData({
           promiseResolve: resolve,
@@ -703,6 +710,11 @@ const EditorContent = ({
       });
     },
     insertItem: ({ name, index, block }) => {
+      console.log("insertItem", {
+        name,
+        index,
+        block,
+      });
       actions.runChange(() => {
         form.mutators.insert(
           name,
@@ -719,6 +731,9 @@ const EditorContent = ({
       });
     },
     pasteItems: (what) => {
+      console.log("pasteItems", {
+        what,
+      });
       actions.runChange(() =>
         pasteItems({
           what,
@@ -1049,6 +1064,7 @@ const EditorContent = ({
               readOnly={editorContext.readOnly}
             />
             <SidebarAndContentContainer height={appHeight}>
+              <EditorElementsSidebar />
               <ContentContainer
                 onClick={() => {
                   setFocussedField([]);
@@ -1072,7 +1088,10 @@ const EditorContent = ({
               </ContentContainer>
               {isEditing && (
                 <SidebarContainer ref={sidebarNodeRef}>
-                  <EditorSidebar focussedField={focussedField} form={form} />
+                  <EditorToolsSidebar
+                    focussedField={focussedField}
+                    form={form}
+                  />
                 </SidebarContainer>
               )}
               {componentPickerData && (

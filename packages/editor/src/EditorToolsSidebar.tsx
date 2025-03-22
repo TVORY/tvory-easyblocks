@@ -9,7 +9,7 @@ import { InlineSettings } from "./inline-settings";
 import { mergeCommonFields } from "./tinacms/form-builder/utils/mergeCommonFields";
 import { Form } from "./form";
 
-type EditorSidebarProps = {
+type EditorToolsSidebarProps = {
   focussedField: Array<string>;
   form: Form;
 };
@@ -25,7 +25,9 @@ const Error = styled.div`
   margin: 16px;
 `;
 
-export const EditorSidebar: React.FC<EditorSidebarProps> = (props) => {
+export const EditorToolsSidebar: React.FC<EditorToolsSidebarProps> = (
+  props
+) => {
   const { focussedField, form } = props;
   const editorContext = useEditorContext();
 
