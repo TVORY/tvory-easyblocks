@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React, { ComponentType, Fragment, ReactElement } from "react";
 import { findComponentDefinitionById } from "../../compiler/findComponentDefinition";
 import {
@@ -430,7 +431,7 @@ function ComponentBuilder(props: ComponentBuilderProps): ReactElement | null {
     }
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   const { ref, __isSelected, ...restPassedProps } = allPassedProps || {};
 
   const runtime = {
